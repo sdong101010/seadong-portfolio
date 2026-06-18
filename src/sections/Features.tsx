@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { FadeUp, ScrollScrubHeadline } from "../components/anim";
@@ -110,7 +110,8 @@ function ProjectCardItem({ proj, i }: { proj: ProjectCard; i: number }) {
   return (
     <CardEnter
       index={i}
-      className="relative rounded-2xl overflow-hidden bg-[#212121] p-5 md:p-6 flex flex-col border-2 border-paper/15 hover:border-red-soft transition-colors"
+      tilt
+      className="group relative rounded-2xl overflow-hidden bg-[#212121] p-5 md:p-6 flex flex-col border-2 border-paper/15 hover:border-red-soft transition-colors"
     >
       <div className="flex items-start justify-between mb-4">
         <span
@@ -185,26 +186,81 @@ function CardEnter({
   children,
   index,
   className = "",
+  tilt = false,
 }: {
   children: React.ReactNode;
   index: number;
   className?: string;
+  tilt?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  // 3D tilt-on-hover (skipped for non-tilt cards e.g. the video card)
+  const mx = useMotionValue(0); // -0.5..0.5
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 180, damping: 18, mass: 0.5 });
+  const sy = useSpring(my, { stiffness: 180, damping: 18, mass: 0.5 });
+  const rotateY = useTransform(sx, [-0.5, 0.5], [8, -8]); // tilt right when cursor on right
+  const rotateX = useTransform(sy, [-0.5, 0.5], [-8, 8]); // tilt up when cursor on top
+  const sheen = useTransform(
+    [sx, sy] as never,
+    ([x, y]: number[]) =>
+      `radial-gradient(420px circle at ${(x + 0.5) * 100}% ${(y + 0.5) * 100}%, rgba(229,57,53,0.18), transparent 60%)`,
+  );
+
+  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!tilt) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    mx.set((e.clientX - rect.left) / rect.width - 0.5);
+    my.set((e.clientY - rect.top) / rect.height - 0.5);
+  }
+  function onMouseLeave() {
+    if (!tilt) return;
+    mx.set(0);
+    my.set(0);
+  }
+
   return (
     <motion.div
       ref={ref}
-      initial={{ scale: 0.95, opacity: 0 }}
-      animate={inView ? { scale: 1, opacity: 1 } : { scale: 0.95, opacity: 0 }}
+      initial={{ y: 40, scale: 0.96, opacity: 0, rotate: -1.5 }}
+      animate={
+        inView
+          ? { y: 0, scale: 1, opacity: 1, rotate: 0 }
+          : { y: 40, scale: 0.96, opacity: 0, rotate: -1.5 }
+      }
       transition={{
-        delay: index * 0.15,
-        duration: 0.7,
+        delay: index * 0.16,
+        duration: 0.85,
         ease: [0.22, 1, 0.36, 1],
       }}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={
+        tilt
+          ? {
+              perspective: 900,
+              rotateX,
+              rotateY,
+              transformStyle: "preserve-3d",
+            }
+          : undefined
+      }
       className={className}
     >
-      {children}
+      {tilt ? (
+        <>
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style={{ background: sheen, mixBlendMode: "screen" }}
+          />
+          <div className="relative z-10 flex flex-col h-full">{children}</div>
+        </>
+      ) : (
+        children
+      )}
     </motion.div>
   );
 }

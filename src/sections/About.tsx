@@ -1,4 +1,4 @@
-import { WordsPullUpMultiStyle, FadeUp } from "../components/anim";
+import { WordsPullUpMultiStyle, FadeUp, Tilt3D } from "../components/anim";
 
 export default function About() {
   return (
@@ -19,9 +19,12 @@ export default function About() {
         }}
       />
 
-      <div
-        id="contact"
-        className="relative bg-[#101010] mx-auto max-w-6xl rounded-2xl md:rounded-[2rem] py-16 md:py-24 px-6 md:px-16 text-center border-2 border-paper"
+      <div id="contact" className="mx-auto max-w-6xl">
+      <Tilt3D
+        maxDeg={0}
+        sheenSize={600}
+        wrapChildren={false}
+        className="relative bg-[#101010] rounded-2xl md:rounded-[2rem] py-16 md:py-24 px-6 md:px-16 text-center border-2 border-paper overflow-hidden"
         style={{ boxShadow: "10px 10px 0 var(--red)" }}
       >
         <FadeUp>
@@ -85,6 +88,7 @@ export default function About() {
             </li>
           </ul>
         </FadeUp>
+      </Tilt3D>
       </div>
 
       <FadeUp delay={0.6} className="mt-12 md:mt-16 text-center">

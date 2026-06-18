@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { WordsPullUp, FadeUp } from "../components/anim";
+import { WordsPullUp, FadeUp, Tilt3D } from "../components/anim";
 
 const NAV_ITEMS = ["Projects", "About", "Contact"];
 
@@ -10,7 +10,12 @@ const HERO_VIDEO =
 export default function Hero() {
   return (
     <section className="h-screen w-full p-3 md:p-5 relative">
-      <div className="relative w-full h-full overflow-hidden rounded-2xl md:rounded-[2rem] border-[3px] border-paper">
+      <Tilt3D
+        maxDeg={0}
+        sheenSize={700}
+        wrapChildren={false}
+        className="relative w-full h-full overflow-hidden rounded-2xl md:rounded-[2rem] border-[3px] border-paper"
+      >
         {/* Background video */}
         <video
           autoPlay
@@ -185,7 +190,7 @@ export default function Hero() {
         >
           ↓ Scroll
         </motion.div>
-      </div>
+      </Tilt3D>
     </section>
   );
 }

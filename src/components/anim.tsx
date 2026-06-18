@@ -1,8 +1,10 @@
-import { useRef, type ReactNode } from "react";
+import { useRef, type ReactNode, type CSSProperties } from "react";
 import {
   motion,
   useInView,
+  useMotionValue,
   useScroll,
+  useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
@@ -250,6 +252,86 @@ export function ScrollScrubHeadline({ lines, className = "" }: ScrubProps) {
         </div>
       ))}
     </div>
+  );
+}
+
+/* ---------- Tilt3D ---------- */
+/* 3D mouse-tilt + cursor-following red sheen.
+   Wrap any block element. The wrapped element becomes positioned via `style`
+   transforms; the sheen is an absolutely-positioned overlay above it (zIndex 0)
+   while a `relative z-10` wrapper around children keeps content readable. */
+
+type Tilt3DProps = {
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  maxDeg?: number; // max tilt angle, default 8
+  sheenColor?: string; // rgba/hex, default red glow
+  sheenSize?: number; // radius in px, default 420
+  /** When true, render children inside an internal z-10 wrapper. Default true. */
+  wrapChildren?: boolean;
+  /** When false, hover effects are off (still renders). */
+  enabled?: boolean;
+};
+
+export function Tilt3D({
+  children,
+  className = "",
+  style,
+  maxDeg = 8,
+  sheenColor = "rgba(229,57,53,0.18)",
+  sheenSize = 420,
+  wrapChildren = true,
+  enabled = true,
+}: Tilt3DProps) {
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 180, damping: 18, mass: 0.5 });
+  const sy = useSpring(my, { stiffness: 180, damping: 18, mass: 0.5 });
+  const rotateY = useTransform(sx, [-0.5, 0.5], [maxDeg, -maxDeg]);
+  const rotateX = useTransform(sy, [-0.5, 0.5], [-maxDeg, maxDeg]);
+  const sheen = useTransform(
+    [sx, sy] as never,
+    ([x, y]: number[]) =>
+      `radial-gradient(${sheenSize}px circle at ${(x + 0.5) * 100}% ${(y + 0.5) * 100}%, ${sheenColor}, transparent 60%)`,
+  );
+
+  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!enabled) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    mx.set((e.clientX - rect.left) / rect.width - 0.5);
+    my.set((e.clientY - rect.top) / rect.height - 0.5);
+  }
+  function onMouseLeave() {
+    if (!enabled) return;
+    mx.set(0);
+    my.set(0);
+  }
+
+  return (
+    <motion.div
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{
+        ...style,
+        perspective: 900,
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      className={`group ${className}`}
+    >
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: sheen, mixBlendMode: "screen" }}
+      />
+      {wrapChildren ? (
+        <div className="relative z-10 w-full h-full">{children}</div>
+      ) : (
+        children
+      )}
+    </motion.div>
   );
 }
 
