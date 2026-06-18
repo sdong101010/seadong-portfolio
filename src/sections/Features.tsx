@@ -57,18 +57,6 @@ const PROJECTS: ProjectCard[] = [
 const SECONDARY: ProjectCard[] = [
   {
     index: "04",
-    title: "Org Roast.",
-    oneLiner:
-      "Audits your Salesforce org and roasts the findings as a rap diss track.",
-    capabilities: [
-      "Real audit — checks security, code quality, and config sprawl",
-      "Gemini writes the rap; ElevenLabs reads it out loud",
-      "Logs in with your Salesforce account, runs on your laptop",
-    ],
-    href: "https://github.com/sdong101010/org-roast",
-  },
-  {
-    index: "05",
     title: "Agentforce ↔ Teams.",
     oneLiner:
       "A Microsoft Teams chatbot wired to a Salesforce Agentforce agent. Login, state, streaming — all working, all yours to fork.",
@@ -77,10 +65,10 @@ const SECONDARY: ProjectCard[] = [
       "Handles login, conversation state, and message streaming",
       "Hosted on Heroku — any Salesforce employee can use it from the browser, no install",
     ],
-    href: "#contact",
+    href: "https://agentforce-demo-teams-641f8eb191e5.herokuapp.com/",
   },
   {
-    index: "06",
+    index: "05",
     title: "Tool Tender.",
     oneLiner:
       "A janitor for my Claude toolchain. Wakes up at 7:30 every morning and updates everything before I do.",
@@ -92,7 +80,7 @@ const SECONDARY: ProjectCard[] = [
     href: "https://github.com/sdong101010/claude-update-all",
   },
   {
-    index: "07",
+    index: "06",
     title: "Daily Reckoning.",
     oneLiner:
       "Every weekday at 8 AM, Slack pings me with anything I forgot to log to Salesforce.",
@@ -103,6 +91,18 @@ const SECONDARY: ProjectCard[] = [
     ],
     href: "https://github.com/sdong101010/se-daily-audit",
     archHref: "https://sdong101010.github.io/se-daily-audit/architecture.html",
+  },
+  {
+    index: "07",
+    title: "Org Roast.",
+    oneLiner:
+      "Audits your Salesforce org and roasts the findings as a rap diss track.",
+    capabilities: [
+      "Real audit — checks security, code quality, and config sprawl",
+      "Gemini writes the rap; ElevenLabs reads it out loud",
+      "Logs in with your Salesforce account, runs on your laptop",
+    ],
+    href: "https://sdong101010.github.io/org-roast/",
   },
 ];
 
