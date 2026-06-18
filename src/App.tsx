@@ -6,8 +6,8 @@ export default function App() {
   return (
     <main className="relative">
       <Hero />
-      <About />
       <Features />
+      <About />
     </main>
   );
 }

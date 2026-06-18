@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { WordsPullUp, FadeUp } from "../components/anim";
 
-const NAV_ITEMS = ["Projects", "Writing", "Roast my org", "Contact"];
+const NAV_ITEMS = ["Projects", "About", "Contact"];
 
 const HERO_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4";
@@ -95,7 +95,7 @@ export default function Hero() {
             aria-hidden
           />
           <span className="font-display tracking-[0.22em] text-paper text-xs md:text-sm uppercase">
-            S—1 / sea.dong
+            sea.dong
           </span>
         </motion.div>
 
@@ -107,7 +107,7 @@ export default function Hero() {
           className="absolute top-6 right-6 md:top-8 md:right-10 z-20 hidden sm:block"
         >
           <span className="font-display tracking-[0.18em] text-cream text-[10px] md:text-xs uppercase">
-            Forward-deployed{" "}
+            Data · AI · Architecture{" "}
             <i
               className="not-italic inline-block px-2 py-0.5 ml-1 bg-red text-ink font-bold"
               style={{ transform: "skewX(-12deg)" }}
@@ -131,17 +131,13 @@ export default function Hero() {
                 className="font-display font-medium leading-[0.85] tracking-[-0.04em] text-paper relative"
                 style={{ fontSize: "clamp(72px, 22vw, 320px)" }}
               >
-                <WordsPullUp
-                  text="sea.dong"
-                  showAsterisk
-                  asteriskClassName="text-red-soft"
-                />
+                <WordsPullUp text="sea.dong" />
               </h1>
               <FadeUp
                 delay={0.55}
                 className="mt-3 md:mt-5 font-display tracking-[0.22em] text-cream text-xs md:text-sm uppercase"
               >
-                * Designed by Salesforce. Made for customers. Built for deals.
+                Principal Data &amp; AI Architect at Salesforce.
               </FadeUp>
             </div>
 
@@ -151,19 +147,23 @@ export default function Hero() {
                 delay={0.65}
                 className="text-paper/80 text-sm md:text-base font-sans leading-snug max-w-md"
               >
-                A forward-deployed Solutions Engineer. I help companies turn AI
-                ambition into shipped systems — through quiet discovery,
-                considered architecture, and demos that hold up under real
-                data.
+                I architect enterprise data and agentic experiences, and
+                build the tools my team uses to win.
               </FadeUp>
 
               <FadeUp delay={0.85} className="mt-6">
                 <a
                   href="#projects"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document
+                      .getElementById("projects")
+                      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
                   className="group inline-flex items-center gap-2 hover:gap-3 transition-all bg-paper text-ink font-display tracking-[0.2em] text-sm md:text-base uppercase pl-5 pr-1.5 py-1.5 rounded-full"
                   style={{ boxShadow: "4px 4px 0 var(--red)" }}
                 >
-                  Run a discovery
+                  Learn more
                   <span className="inline-flex items-center justify-center w-9 h-9 md:w-10 md:h-10 bg-ink rounded-full transition-transform group-hover:scale-110">
                     <ArrowRight
                       className="w-4 h-4 md:w-5 md:h-5 text-paper"
@@ -183,7 +183,7 @@ export default function Hero() {
           transition={{ delay: 1.4, duration: 0.6 }}
           className="absolute bottom-4 left-5 md:left-12 z-10 font-mono text-[10px] md:text-xs text-cream/70 uppercase tracking-widest hidden md:block"
         >
-          ↓ Scroll · 9 chapters · all-out demo
+          ↓ Scroll
         </motion.div>
       </div>
     </section>

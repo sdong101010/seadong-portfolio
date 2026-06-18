@@ -1,8 +1,4 @@
-import {
-  WordsPullUpMultiStyle,
-  ScrollRevealParagraph,
-  FadeUp,
-} from "../components/anim";
+import { WordsPullUpMultiStyle, FadeUp } from "../components/anim";
 
 export default function About() {
   return (
@@ -14,7 +10,7 @@ export default function About() {
       <div
         className="absolute slash"
         style={{
-          top: "8%",
+          top: "3%",
           right: "-4%",
           width: "32%",
           height: "30px",
@@ -24,12 +20,13 @@ export default function About() {
       />
 
       <div
+        id="contact"
         className="relative bg-[#101010] mx-auto max-w-6xl rounded-2xl md:rounded-[2rem] py-16 md:py-24 px-6 md:px-16 text-center border-2 border-paper"
         style={{ boxShadow: "10px 10px 0 var(--red)" }}
       >
         <FadeUp>
           <span className="font-display tracking-[0.32em] text-red-soft text-[10px] sm:text-xs md:text-sm uppercase">
-            // Forward-deployed
+            // Data · AI · Architecture · Reach out
           </span>
         </FadeUp>
 
@@ -38,40 +35,63 @@ export default function About() {
             className="text-paper text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl max-w-3xl mx-auto leading-[0.95] sm:leading-[0.9]"
             segments={[
               {
-                text: "I am Sea Dong,",
-                className: "font-sans font-normal text-paper",
-              },
-              {
-                text: "a self-taught architect.",
+                text: "Engineer in the room with the salespeople. Salesperson in the room with the engineers.",
                 className: "italic font-serif font-normal text-red-soft",
-              },
-              {
-                text: "I have skills in discovery, demos, and shipping the boring middle.",
-                className: "font-sans font-normal text-paper",
               },
             ]}
           />
         </div>
 
-        <div className="mt-10 md:mt-14 max-w-2xl mx-auto">
-          <ScrollRevealParagraph
-            className="text-cream text-sm sm:text-base md:text-lg font-sans leading-relaxed"
-            text="Over the last seven-ish years I've worked at Fast Enterprises on government data systems, at C3.ai on enterprise AI before the wave, and now at Salesforce as a Principal Solutions Engineer covering Data Cloud, Agentforce, and the connective tissue between them. The shape of the work has stayed the same: listen carefully, draw the architecture, demo against the real data, ship the boring middle that makes the rest possible."
-          />
-        </div>
+        <FadeUp delay={0.3} className="mt-10 md:mt-14 max-w-2xl mx-auto">
+          <p className="text-cream/85 text-sm sm:text-base md:text-lg font-sans leading-relaxed text-left sm:text-center">
+            Ten-plus years getting enterprise software actually deployed.
+            Lead at Fast Enterprises — five production go-lives. Senior at
+            C3.ai — built and shipped predictive models at scale. Now at
+            Salesforce — won the technical eval on Fortune 100 deals,
+            delivered the demos that ranked Salesforce #1 of 10+ vendors in
+            Forrester Wave, built AI tools my team uses to win their deals.
+          </p>
+        </FadeUp>
 
-        <FadeUp delay={0.4} className="mt-12 md:mt-16">
-          <div className="inline-flex flex-wrap items-center gap-x-6 gap-y-3 font-display tracking-[0.22em] text-xs md:text-sm uppercase text-cream/80">
-            <span>UMich</span>
-            <span className="text-red-soft">↦</span>
-            <span>Fast Enterprises</span>
-            <span className="text-red-soft">↦</span>
-            <span>C3.ai</span>
-            <span className="text-red-soft">↦</span>
-            <span className="text-paper">Salesforce</span>
-          </div>
+        <FadeUp delay={0.5} className="mt-12 md:mt-16">
+          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-3 font-display tracking-[0.22em] text-[10px] md:text-xs uppercase text-cream/80">
+            <li>
+              <a
+                href="mailto:sea.dong@salesforce.com"
+                className="border-b border-paper/30 hover:text-red-soft hover:border-red-soft transition-colors pb-0.5"
+              >
+                sea.dong@salesforce.com
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com/in/seadong"
+                rel="noopener"
+                target="_blank"
+                className="border-b border-paper/30 hover:text-red-soft hover:border-red-soft transition-colors pb-0.5"
+              >
+                LinkedIn
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/sdong101010"
+                rel="noopener"
+                target="_blank"
+                className="border-b border-paper/30 hover:text-red-soft hover:border-red-soft transition-colors pb-0.5"
+              >
+                GitHub
+              </a>
+            </li>
+          </ul>
         </FadeUp>
       </div>
+
+      <FadeUp delay={0.6} className="mt-12 md:mt-16 text-center">
+        <p className="font-mono text-[10px] tracking-widest uppercase text-cream/45">
+          © Sea Dong, 2026 · No agents were harmed in the making of this site.
+        </p>
+      </FadeUp>
     </section>
   );
 }

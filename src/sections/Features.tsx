@@ -1,10 +1,9 @@
 import { motion, useInView } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
-import { useRef } from "react";
-import { WordsPullUpMultiStyle, FadeUp } from "../components/anim";
+import { useEffect, useRef } from "react";
+import { FadeUp, ScrollScrubHeadline } from "../components/anim";
 
-const FEATURE_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260406_133058_0504132a-0cf3-4450-a370-8ea3b05c95d4.mp4";
+const FEATURE_VIDEO = "/discovery.mp4";
 
 type ProjectCard = {
   index: string;
@@ -12,71 +11,175 @@ type ProjectCard = {
   oneLiner: string;
   capabilities: string[];
   href: string;
+  archHref?: string;
 };
 
 const PROJECTS: ProjectCard[] = [
   {
     index: "01",
-    title: "Org Roast.",
-    oneLiner: "Audits your Salesforce org. Returns the findings as a rap diss.",
+    title: "Sea-cret Agent.",
+    oneLiner:
+      "Sits on your second monitor during customer calls — spots their questions and quietly answers them while you talk.",
     capabilities: [
-      "Real audit across metadata, Apex, security, automation, limits",
-      "Gemini turns findings into a roast",
-      "ElevenLabs reads it aloud — for the silence of Modify All Data",
-      "Salesforce OAuth, runs on your localhost",
+      "Transcribes the meeting on your Mac — no audio leaves your laptop",
+      "Claude flags real questions in real time (and ignores small talk)",
+      "Researches the web and your Slack, drops answer cards as you talk",
     ],
-    href: "https://github.com/sdong101010/org-roast",
+    href: "https://github.com/sdong101010/sea-cret-agent",
+    archHref: "https://sdong101010.github.io/sea-cret-agent/architecture.html",
   },
   {
     index: "02",
-    title: "Sea-cret Agent.",
+    title: "RFP Autopilot.",
     oneLiner:
-      "Local meeting copilot. Hears the question, finds the answer, drops it in your sidebar.",
+      "Drop an RFP spreadsheet in Slack. Get a drafted, source-cited spreadsheet back.",
     capabilities: [
-      "On-device transcription via Apple SpeechAnalyzer (macOS 26)",
-      "Claude detects customer questions in real-time",
-      "Web + Slack research → answer card on your second monitor",
-      "Nothing leaves the laptop except the fetches it decides to do",
+      "Submit via Slack — link to a sheet, optional notes, that's it",
+      "Drafts answers, cites sources, flags low-confidence rows for review",
+      "Runs on a schedule, no servers — designed for a small SE team",
     ],
-    href: "https://github.com/sdong101010/sea-cret-agent",
+    href: "#contact",
   },
   {
     index: "03",
-    title: "Agentforce ↔ Teams.",
+    title: "Tailor.",
     oneLiner:
-      "A Microsoft Teams bot that talks to a Salesforce Agentforce agent. End-to-end.",
+      "Describe a customer. Tailor builds them a working demo — and refuses to invent a single number it can't back up.",
     capabilities: [
-      "Reference impl over /einstein/ai-agent/v1/* REST API",
-      "OAuth client-credentials via External Client App",
-      "Deployable SFDX bundle (agent + ECA + planner snapshots)",
-      "Hand-it-to-a-teammate zip with node_modules pre-bundled",
+      "Asks the right questions, drafts a story, waits for sign-off before building",
+      "Builds against a live org",
+      "Stands up the CRM and data pieces in parallel, not one at a time",
     ],
     href: "#contact",
   },
 ];
 
-const SECONDARY = [
+const SECONDARY: ProjectCard[] = [
   {
-    title: "data360-demo-builder",
-    blurb:
-      "AE describes the customer. Skill builds the Data 360 demo. The honesty gate refuses to bake numbers it can't defend.",
+    index: "04",
+    title: "Org Roast.",
+    oneLiner:
+      "Audits your Salesforce org and roasts the findings as a rap diss track.",
+    capabilities: [
+      "Real audit — checks security, code quality, and config sprawl",
+      "Gemini writes the rap; ElevenLabs reads it out loud",
+      "Logs in with your Salesforce account, runs on your laptop",
+    ],
+    href: "https://github.com/sdong101010/org-roast",
   },
   {
-    title: "rfp-loop",
-    blurb:
-      "Submit RFP in Slack. Get a drafted sheet back. Pure laptop infrastructure.",
+    index: "05",
+    title: "Agentforce ↔ Teams.",
+    oneLiner:
+      "A Microsoft Teams chatbot wired to a Salesforce Agentforce agent. Login, state, streaming — all working, all yours to fork.",
+    capabilities: [
+      "Reference build using Salesforce's Agentforce REST API",
+      "Handles login, conversation state, and message streaming",
+      "Hosted on Heroku — any Salesforce employee can use it from the browser, no install",
+    ],
+    href: "#contact",
   },
   {
-    title: "claude-update-all",
-    blurb:
-      "Daily cron that updates Claude Code, plugins, skills, Homebrew, sf CLI, uv. One job.",
+    index: "06",
+    title: "Tool Tender.",
+    oneLiner:
+      "A janitor for my Claude toolchain. Wakes up at 7:30 every morning and updates everything before I do.",
+    capabilities: [
+      "Updates the CLI, plugins, skills, and supporting tools — every piece on its own",
+      "One thing breaking doesn't stop the rest from updating",
+      "Ships as a skill so Claude itself knows when to run it",
+    ],
+    href: "https://github.com/sdong101010/claude-update-all",
   },
   {
-    title: "se-daily-audit",
-    blurb:
-      "8 AM Slack thread. Reconciles your week. Replies become Salesforce writes.",
+    index: "07",
+    title: "Daily Reckoning.",
+    oneLiner:
+      "Every weekday at 8 AM, Slack pings me with anything I forgot to log to Salesforce.",
+    capabilities: [
+      "Cross-checks my calendar, Slack DMs, and Salesforce activity for gaps",
+      "Reply 'y' or 'y except 4,7' in the thread — it logs the rest for you",
+      "Three modes: dry-run, semi-auto, fully hands-off",
+    ],
+    href: "https://github.com/sdong101010/se-daily-audit",
+    archHref: "https://sdong101010.github.io/se-daily-audit/architecture.html",
   },
 ];
+
+function ProjectCardItem({ proj, i }: { proj: ProjectCard; i: number }) {
+  return (
+    <CardEnter
+      index={i}
+      className="relative rounded-2xl overflow-hidden bg-[#212121] p-5 md:p-6 flex flex-col border-2 border-paper/15 hover:border-red-soft transition-colors"
+    >
+      <div className="flex items-start justify-between mb-4">
+        <span
+          className="inline-block font-display tracking-[0.18em] text-ink text-[10px] uppercase bg-red px-2 py-0.5 font-bold"
+          style={{ transform: "skewX(-12deg)" }}
+        >
+          <span
+            className="inline-block"
+            style={{ transform: "skewX(12deg)" }}
+          >
+            {proj.index}
+          </span>
+        </span>
+        <div
+          className="w-10 h-10 sm:w-12 sm:h-12 bg-red flex items-center justify-center"
+          style={{
+            clipPath:
+              "polygon(0 28%, 30% 0, 70% 0, 100% 28%, 88% 70%, 50% 100%, 12% 70%)",
+          }}
+          aria-hidden
+        >
+          <span className="font-display text-paper text-lg">●</span>
+        </div>
+      </div>
+
+      <h3 className="font-serif italic text-2xl md:text-3xl text-paper leading-tight mb-2">
+        {proj.title}
+      </h3>
+      <p className="text-cream/70 text-xs md:text-sm font-sans leading-snug mb-5">
+        {proj.oneLiner}
+      </p>
+
+      <ul className="space-y-2 flex-1">
+        {proj.capabilities.map((cap, j) => (
+          <li
+            key={j}
+            className="flex items-start gap-2 text-cream/85 text-xs md:text-sm font-sans"
+          >
+            <Check
+              className="w-4 h-4 text-red-soft mt-0.5 flex-shrink-0"
+              strokeWidth={2.5}
+            />
+            <span>{cap}</span>
+          </li>
+        ))}
+      </ul>
+
+      {(() => {
+        const ctaHref = proj.archHref ?? proj.href;
+        const ctaLabel = proj.archHref ? "View architecture" : "Learn more";
+        return (
+          <a
+            href={ctaHref}
+            rel="noopener"
+            target={ctaHref.startsWith("http") ? "_blank" : undefined}
+            className="mt-5 inline-flex items-center gap-2 group font-display tracking-[0.22em] text-red-soft text-[10px] md:text-xs uppercase hover:text-paper transition-colors"
+          >
+            {ctaLabel}
+            <ArrowRight
+              className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5"
+              strokeWidth={2.5}
+              style={{ transform: "rotate(-45deg)" }}
+            />
+          </a>
+        );
+      })()}
+    </CardEnter>
+  );
+}
 
 function CardEnter({
   children,
@@ -106,6 +209,36 @@ function CardEnter({
   );
 }
 
+function DiscoveryVideo() {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    v.playbackRate = 0.6;
+    const lock = () => {
+      v.playbackRate = 0.6;
+    };
+    v.addEventListener("ratechange", lock);
+    v.addEventListener("play", lock);
+    return () => {
+      v.removeEventListener("ratechange", lock);
+      v.removeEventListener("play", lock);
+    };
+  }, []);
+  return (
+    <video
+      ref={ref}
+      autoPlay
+      loop
+      muted
+      playsInline
+      className="absolute inset-0 w-full h-full object-cover opacity-60"
+    >
+      <source src={FEATURE_VIDEO} type="video/mp4" />
+    </video>
+  );
+}
+
 export default function Features() {
   return (
     <section
@@ -119,7 +252,7 @@ export default function Features() {
       <div
         className="absolute slash"
         style={{
-          top: "12%",
+          top: "4%",
           left: "-6%",
           width: "44%",
           height: "26px",
@@ -130,33 +263,27 @@ export default function Features() {
 
       <div className="relative max-w-7xl mx-auto">
         {/* Section header */}
-        <div className="mb-12 md:mb-16">
+        <div className="mb-10 md:mb-14">
           <FadeUp>
             <span className="inline-block font-display tracking-[0.32em] text-red-soft text-[10px] sm:text-xs md:text-sm uppercase mb-6">
-              // Capability cards
+              // Projects
             </span>
           </FadeUp>
-          <div className="space-y-2">
-            <WordsPullUpMultiStyle
-              className="text-paper text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-normal max-w-3xl !justify-start"
-              segments={[
-                {
-                  text: "Studio-grade workflows for shipping things that hold up under real data.",
-                  className: "text-paper",
-                },
-              ]}
-            />
-            <WordsPullUpMultiStyle
-              className="text-cream/60 text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif italic max-w-3xl !justify-start"
-              delay={0.3}
-              segments={[
-                {
-                  text: "Built for pure capability. Powered by AI*.",
-                  className: "",
-                },
-              ]}
-            />
-          </div>
+          <ScrollScrubHeadline
+            className="space-y-2 max-w-3xl"
+            lines={[
+              {
+                text: "The tools I built to ship the technical win.",
+                className:
+                  "text-paper text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-normal leading-tight",
+              },
+              {
+                text: "Built for pure capability.",
+                className:
+                  "text-cream/60 text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif italic leading-tight",
+              },
+            ]}
+          />
         </div>
 
         {/* 4-column grid: video card + 3 project cards */}
@@ -166,16 +293,8 @@ export default function Features() {
             index={0}
             className="relative rounded-2xl overflow-hidden bg-[#212121] aspect-video lg:aspect-auto lg:h-full border-2 border-paper/20"
           >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src={FEATURE_VIDEO} type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+            <DiscoveryVideo />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/50" />
             <div className="absolute bottom-5 left-5 right-5 z-10">
               <span className="block font-display tracking-[0.28em] text-red-soft text-[10px] uppercase mb-2">
                 // Discovery
@@ -195,72 +314,7 @@ export default function Features() {
 
           {/* Cards 2-4 — project cards */}
           {PROJECTS.map((proj, i) => (
-            <CardEnter
-              key={proj.index}
-              index={i + 1}
-              className="relative rounded-2xl overflow-hidden bg-[#212121] p-5 md:p-6 flex flex-col border-2 border-paper/15 hover:border-red-soft transition-colors"
-            >
-              {/* Number chip */}
-              <div className="flex items-start justify-between mb-4">
-                <span
-                  className="inline-block font-display tracking-[0.18em] text-ink text-[10px] uppercase bg-red px-2 py-0.5 font-bold"
-                  style={{ transform: "skewX(-12deg)" }}
-                >
-                  <span
-                    className="inline-block"
-                    style={{ transform: "skewX(12deg)" }}
-                  >
-                    {proj.index}
-                  </span>
-                </span>
-                <div
-                  className="w-10 h-10 sm:w-12 sm:h-12 bg-red flex items-center justify-center"
-                  style={{
-                    clipPath:
-                      "polygon(0 28%, 30% 0, 70% 0, 100% 28%, 88% 70%, 50% 100%, 12% 70%)",
-                  }}
-                  aria-hidden
-                >
-                  <span className="font-display text-paper text-lg">●</span>
-                </div>
-              </div>
-
-              <h3 className="font-serif italic text-2xl md:text-3xl text-paper leading-tight mb-2">
-                {proj.title}
-              </h3>
-              <p className="text-cream/70 text-xs md:text-sm font-sans leading-snug mb-5">
-                {proj.oneLiner}
-              </p>
-
-              <ul className="space-y-2 flex-1">
-                {proj.capabilities.map((cap, j) => (
-                  <li
-                    key={j}
-                    className="flex items-start gap-2 text-cream/85 text-xs md:text-sm font-sans"
-                  >
-                    <Check
-                      className="w-4 h-4 text-red-soft mt-0.5 flex-shrink-0"
-                      strokeWidth={2.5}
-                    />
-                    <span>{cap}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <a
-                href={proj.href}
-                rel="noopener"
-                target={proj.href.startsWith("http") ? "_blank" : undefined}
-                className="mt-5 inline-flex items-center gap-2 group font-display tracking-[0.22em] text-red-soft text-[10px] md:text-xs uppercase hover:text-paper transition-colors"
-              >
-                Learn more
-                <ArrowRight
-                  className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5"
-                  strokeWidth={2.5}
-                  style={{ transform: "rotate(-45deg)" }}
-                />
-              </a>
-            </CardEnter>
+            <ProjectCardItem key={proj.index} proj={proj} i={i + 1} />
           ))}
         </div>
 
@@ -275,68 +329,13 @@ export default function Features() {
             </div>
           </FadeUp>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-            {SECONDARY.map((item, i) => (
-              <CardEnter
-                key={item.title}
-                index={i}
-                className="relative bg-[#161616] border-2 border-paper/15 rounded-xl p-4 md:p-5 hover:border-red-soft transition-colors"
-              >
-                <h4 className="font-mono text-paper text-sm md:text-base font-bold tracking-wider mb-2">
-                  {item.title}
-                </h4>
-                <p className="text-cream/65 text-xs md:text-sm font-sans leading-snug">
-                  {item.blurb}
-                </p>
-              </CardEnter>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-2 md:gap-1 lg:h-[480px]">
+            {SECONDARY.map((proj, i) => (
+              <ProjectCardItem key={proj.index} proj={proj} i={i} />
             ))}
           </div>
         </div>
 
-        {/* Footer / contact */}
-        <FadeUp delay={0.2} className="mt-24 md:mt-32 text-center">
-          <div id="contact" />
-          <span className="block font-display tracking-[0.32em] text-red-soft text-[10px] sm:text-xs md:text-sm uppercase mb-4">
-            // Reach out
-          </span>
-          <p className="font-serif italic text-paper text-2xl sm:text-3xl md:text-4xl max-w-2xl mx-auto leading-tight">
-            Need careful discovery, considered architecture, or a demo that
-            holds up under real data?
-          </p>
-          <ul className="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3 font-display tracking-[0.22em] text-xs md:text-sm uppercase text-cream/80">
-            <li>
-              <a
-                href="mailto:sea.dong@salesforce.com"
-                className="border-b border-paper/30 hover:text-red-soft hover:border-red-soft transition-colors pb-0.5"
-              >
-                sea.dong@salesforce.com
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.linkedin.com/in/seadong"
-                rel="noopener"
-                target="_blank"
-                className="border-b border-paper/30 hover:text-red-soft hover:border-red-soft transition-colors pb-0.5"
-              >
-                LinkedIn
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/sdong101010"
-                rel="noopener"
-                target="_blank"
-                className="border-b border-paper/30 hover:text-red-soft hover:border-red-soft transition-colors pb-0.5"
-              >
-                GitHub
-              </a>
-            </li>
-          </ul>
-          <p className="mt-12 font-mono text-[10px] tracking-widest uppercase text-cream/45">
-            © Sea Dong, 2026 · No coasters were harmed.
-          </p>
-        </FadeUp>
       </div>
     </section>
   );

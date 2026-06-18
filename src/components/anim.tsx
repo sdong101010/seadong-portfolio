@@ -179,6 +179,80 @@ export function ScrollRevealParagraph({
   );
 }
 
+/* ---------- ScrollScrubHeadline ---------- */
+/* Letter-by-letter reveal scrubbed to scroll position (not just on entry).
+   Pass two `lines` — first renders bold, second renders italic serif. */
+
+type ScrubLine = { text: string; className?: string };
+
+type ScrubProps = {
+  lines: ScrubLine[];
+  className?: string;
+};
+
+function ScrubLetter({
+  ch,
+  progress,
+  start,
+  end,
+}: {
+  ch: string;
+  progress: MotionValue<number>;
+  start: number;
+  end: number;
+}) {
+  const opacity = useTransform(progress, [start, end], [0.12, 1]);
+  const y = useTransform(progress, [start, end], [14, 0]);
+  return (
+    <motion.span
+      style={{ opacity, y, display: "inline-block" }}
+      className="will-change-transform"
+    >
+      {ch === " " ? " " : ch}
+    </motion.span>
+  );
+}
+
+export function ScrollScrubHeadline({ lines, className = "" }: ScrubProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.95", "start 0.25"],
+  });
+
+  const totalChars = lines.reduce(
+    (n, l) => n + l.text.replace(/\s/g, "").length,
+    0,
+  );
+  let charIdx = 0;
+  const window = 0.18; // each letter fades in over 18% of scroll progress
+
+  return (
+    <div ref={ref} className={className}>
+      {lines.map((line, li) => (
+        <div key={li} className={line.className ?? ""}>
+          {line.text.split("").map((ch, i) => {
+            const isSpace = /\s/.test(ch);
+            const idx = isSpace ? charIdx : charIdx++;
+            const t = totalChars === 0 ? 0 : idx / totalChars;
+            const start = Math.max(0, t - window / 2);
+            const end = Math.min(1, t + window / 2);
+            return (
+              <ScrubLetter
+                key={`${li}-${i}`}
+                ch={ch}
+                progress={scrollYProgress}
+                start={start}
+                end={end}
+              />
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ---------- Generic FadeUp ---------- */
 
 type FadeUpProps = {
