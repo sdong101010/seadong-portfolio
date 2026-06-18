@@ -47,12 +47,12 @@ export default function About() {
 
         <FadeUp delay={0.3} className="mt-10 md:mt-14 max-w-2xl mx-auto">
           <p className="text-cream/85 text-sm sm:text-base md:text-lg font-sans leading-relaxed text-left sm:text-center">
-            Ten-plus years getting enterprise software actually deployed.
-            Lead at Fast Enterprises — five production go-lives. Senior at
-            C3.ai — built and shipped predictive models at scale. Now at
-            Salesforce — won the technical eval on Fortune 100 deals,
-            delivered the demos that ranked Salesforce #1 of 10+ vendors in
-            Forrester Wave, built AI tools my team uses to win their deals.
+            Ten-plus years getting enterprise software deployed. Lead at
+            Fast Enterprises — multiple successful implementations. Senior
+            at C3.ai — shipped predictive models at scale. Now at Salesforce
+            — winning technical evals on Fortune 100 deals, delivering the
+            demo that earned Salesforce a #1 Forrester Wave ranking, and
+            building the AI tools my team wins with.
           </p>
         </FadeUp>
 
