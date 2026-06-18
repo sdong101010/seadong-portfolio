@@ -32,13 +32,14 @@ const PROJECTS: ProjectCard[] = [
     index: "02",
     title: "RFP Autopilot.",
     oneLiner:
-      "Drop an RFP spreadsheet in Slack. Get a drafted, source-cited spreadsheet back.",
+      "Paste a Google Sheet. Chat with an agent. Get a source-cited draft, row by row.",
     capabilities: [
-      "Submit via Slack — link to a sheet, optional notes, that's it",
-      "Drafts answers, cites sources, flags low-confidence rows for review",
-      "Runs on a schedule, no servers — designed for a small SE team",
+      "Watch it think live — assistant deltas, tool calls, citations stream in",
+      "Every answer is staged for your approval before it lands in a cell",
+      "Hosted on Heroku — no scratch orgs, no Slack setup, just paste a sheet",
     ],
-    href: "#contact",
+    href: "https://rfp-agent-1125-971aa9be0486.herokuapp.com/",
+    archHref: "https://rfp-agent-1125-971aa9be0486.herokuapp.com/architecture",
   },
   {
     index: "03",
@@ -65,7 +66,7 @@ const SECONDARY: ProjectCard[] = [
       "Handles login, conversation state, and message streaming",
       "Hosted on Heroku — any Salesforce employee can use it from the browser, no install",
     ],
-    href: "https://agentforce-demo-teams-641f8eb191e5.herokuapp.com/",
+    href: "https://agentforce-demo-teams-641f8eb191e5.herokuapp.com/how-it-works",
   },
   {
     index: "05",
