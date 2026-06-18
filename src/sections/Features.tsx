@@ -67,6 +67,7 @@ const SECONDARY: ProjectCard[] = [
       "Hosted on Heroku — any Salesforce employee can use it from the browser, no install",
     ],
     href: "https://agentforce-demo-teams-641f8eb191e5.herokuapp.com/how-it-works",
+    archHref: "https://agentforce-demo-teams-641f8eb191e5.herokuapp.com/how-it-works",
   },
   {
     index: "05",
