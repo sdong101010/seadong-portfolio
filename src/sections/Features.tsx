@@ -12,6 +12,7 @@ type ProjectCard = {
   capabilities: string[];
   href: string;
   archHref?: string;
+  wip?: boolean;
 };
 
 const PROJECTS: ProjectCard[] = [
@@ -52,6 +53,7 @@ const PROJECTS: ProjectCard[] = [
       "Stands up the CRM and data pieces in parallel, not one at a time",
     ],
     href: "#contact",
+    wip: true,
   },
 ];
 
@@ -162,6 +164,13 @@ function ProjectCardItem({ proj, i }: { proj: ProjectCard; i: number }) {
       </ul>
 
       {(() => {
+        if (proj.wip) {
+          return (
+            <span className="mt-5 inline-flex items-center gap-2 font-display tracking-[0.22em] text-cream/40 text-[10px] md:text-xs uppercase">
+              Work in progress
+            </span>
+          );
+        }
         const ctaHref = proj.archHref ?? proj.href;
         const ctaLabel = proj.archHref ? "View architecture" : "Learn more";
         return (
