@@ -1,7 +1,7 @@
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { FadeUp, ScrollScrubHeadline } from "../components/anim";
+import { FadeUp } from "../components/anim";
 
 const FEATURE_VIDEO = "/discovery.mp4";
 
@@ -336,21 +336,18 @@ export default function Features() {
               // Projects
             </span>
           </FadeUp>
-          <ScrollScrubHeadline
-            className="space-y-2 max-w-3xl"
-            lines={[
-              {
-                text: "The tools I built to ship the technical win.",
-                className:
-                  "text-paper text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-normal leading-tight",
-              },
-              {
-                text: "Built for pure capability.",
-                className:
-                  "text-cream/60 text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif italic leading-tight",
-              },
-            ]}
-          />
+          <div className="space-y-2 max-w-3xl">
+            <FadeUp>
+              <h2 className="text-paper text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-normal leading-tight">
+                Built to win.
+              </h2>
+            </FadeUp>
+            <FadeUp delay={0.12}>
+              <p className="text-cream/60 text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif italic leading-tight">
+                Every tool here started as a problem.
+              </p>
+            </FadeUp>
+          </div>
         </div>
 
         {/* 4-column grid: video card + 3 project cards */}
@@ -361,22 +358,7 @@ export default function Features() {
             className="relative rounded-2xl overflow-hidden bg-[#212121] aspect-video lg:aspect-auto lg:h-full border-2 border-paper/20"
           >
             <DiscoveryVideo />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/50" />
-            <div className="absolute bottom-5 left-5 right-5 z-10">
-              <span className="block font-display tracking-[0.28em] text-red-soft text-[10px] uppercase mb-2">
-                // Discovery
-              </span>
-              <h3
-                className="font-serif italic text-2xl md:text-3xl text-paper leading-tight"
-                style={{ color: "#E1E0CC" }}
-              >
-                Your creative canvas.
-              </h3>
-              <p className="mt-2 text-cream/70 text-xs md:text-sm font-sans leading-snug">
-                A real demo, drawn against your data, before the slide deck
-                loads.
-              </p>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
           </CardEnter>
 
           {/* Cards 2-4 — project cards */}

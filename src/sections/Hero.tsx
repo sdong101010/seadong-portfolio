@@ -153,7 +153,7 @@ export default function Hero() {
                 className="text-paper/80 text-sm md:text-base font-sans leading-snug max-w-md"
               >
                 I architect enterprise data and agentic experiences, and
-                build the tools my team uses to win.
+                build the tools my team relies on.
               </FadeUp>
 
               <FadeUp delay={0.85} className="mt-6">
@@ -168,7 +168,7 @@ export default function Hero() {
                   className="group inline-flex items-center gap-2 hover:gap-3 transition-all bg-paper text-ink font-display tracking-[0.2em] text-sm md:text-base uppercase pl-5 pr-1.5 py-1.5 rounded-full"
                   style={{ boxShadow: "4px 4px 0 var(--red)" }}
                 >
-                  Learn more
+                  See the work
                   <span className="inline-flex items-center justify-center w-9 h-9 md:w-10 md:h-10 bg-ink rounded-full transition-transform group-hover:scale-110">
                     <ArrowRight
                       className="w-4 h-4 md:w-5 md:h-5 text-paper"

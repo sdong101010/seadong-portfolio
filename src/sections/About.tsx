@@ -52,7 +52,7 @@ export default function About() {
             at C3.ai — shipped predictive models at scale. Now at Salesforce
             — winning technical evals on Fortune 100 deals, delivering the
             demo that earned Salesforce a #1 Forrester Wave ranking, and
-            building the AI tools my team wins with.
+            building the AI tools my team runs on.
           </p>
         </FadeUp>
 
